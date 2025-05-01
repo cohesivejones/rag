@@ -13,17 +13,46 @@ rag/
 │   └── routers/
 │       ├── __init__.py
 │       └── trace.py    # Trace endpoint implementation
-├── requirements.txt    # Project dependencies
+├── pyproject.toml      # Project configuration and dependencies
 └── README.md          # Project documentation
 ```
 
 ## Installation
 
-1. Clone the repository
-2. Install dependencies:
+This project uses [UV](https://github.com/astral-sh/uv) for dependency management, which is a faster alternative to pip.
+
+### Requirements
+
+- Python 3.8.1 or higher
+
+### Install UV
+
+If you don't have UV installed, you can install it with:
 
 ```bash
-pip install -r requirements.txt
+pip install uv
+```
+
+### Set Up the Project
+
+1. Clone the repository
+2. Create a virtual environment and install dependencies:
+
+```bash
+# Create a virtual environment
+uv venv
+
+# Activate the virtual environment
+# On Windows:
+.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+uv pip install -e .
+
+# For development, install development dependencies
+uv pip install -e ".[dev]"
 ```
 
 ## Running the Application
@@ -31,6 +60,7 @@ pip install -r requirements.txt
 To run the application locally:
 
 ```bash
+# Make sure your virtual environment is activated
 uvicorn app.main:app --reload
 ```
 
@@ -84,3 +114,56 @@ curl -X 'POST' \
 ```
 
 Or using the Swagger UI at http://localhost:8000/docs
+
+## Development
+
+### Running Tests
+
+To run tests:
+
+```bash
+# Make sure you've installed development dependencies
+uv run pytest
+```
+
+To run tests with coverage:
+
+```bash
+uv run pytest --cov=app
+```
+
+### Code Formatting and Linting
+
+This project uses several tools to ensure code quality:
+
+- **Black** for code formatting:
+  ```bash
+  uv run black .
+  ```
+
+- **isort** for import sorting:
+  ```bash
+  uv run isort .
+  ```
+
+- **flake8** for linting:
+  ```bash
+  uv run flake8
+  ```
+
+- **mypy** for type checking:
+  ```bash
+  uv run mypy app
+  ```
+
+You can run all of these checks with:
+
+```bash
+# Format code
+uv run black .
+uv run isort .
+
+# Check code
+uv run flake8
+uv run mypy app
+```
