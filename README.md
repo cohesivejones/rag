@@ -10,11 +10,17 @@ rag/
 │   ├── __init__.py
 │   ├── main.py         # Main FastAPI application
 │   ├── models.py       # Pydantic models for request/response
+│   ├── db/
+│   │   ├── __init__.py
+│   │   └── neo4j.py    # Neo4j database connection
 │   └── routers/
 │       ├── __init__.py
 │       └── trace.py    # Trace endpoint implementation
+├── .env                # Environment variables (not in version control)
+├── .env.example        # Example environment variables template
+├── .gitignore          # Git ignore file
 ├── pyproject.toml      # Project configuration and dependencies
-└── README.md          # Project documentation
+└── README.md           # Project documentation
 ```
 
 ## Installation
@@ -24,6 +30,7 @@ This project uses [UV](https://github.com/astral-sh/uv) for dependency managemen
 ### Requirements
 
 - Python 3.8.1 or higher
+- Neo4j Database (version 5.x recommended)
 
 ### Install UV
 
@@ -54,6 +61,24 @@ uv pip install -e .
 # For development, install development dependencies
 uv pip install -e ".[dev]"
 ```
+
+### Environment Variables
+
+The application uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
+
+```
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_password_here
+```
+
+A `.env.example` file is provided as a template. You can copy it to create your own `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file to set your Neo4j database credentials.
 
 ## Running the Application
 
