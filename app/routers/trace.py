@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Body, HTTPException
-from app.models import TraceRequest, TraceResponse
-from app.db.neo4j import neo4j_connection
 import logging
+
+from fastapi import APIRouter
+
+from app.db.neo4j import neo4j_connection
+from app.models import TraceRequest, TraceResponse
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +15,7 @@ router = APIRouter(
 
 
 @router.post("", response_model=TraceResponse, status_code=200)
-async def trace(request: TraceRequest = Body(...)):
+async def trace(request: TraceRequest = None):
     """
     Process a trace request with the given entrypoint and depth.
     
@@ -22,6 +24,9 @@ async def trace(request: TraceRequest = Body(...)):
     
     Returns a response containing the processed parameters and a success message.
     """
+    if request is None:
+        from fastapi import Body
+        request = Body(...)
     # Sample Cypher query using the entrypoint and depth parameters
     query = """
     MATCH path = (n {name: $entrypoint})-[*1..$depth]-(connected)
@@ -42,13 +47,22 @@ async def trace(request: TraceRequest = Body(...)):
         
         # Return mock data for demonstration purposes
         results = [
-            {"source": request.entrypoint, "target": f"connected_node_{i}", "distance": min(i, request.depth)} 
+            {
+                "source": request.entrypoint, 
+                "target": f"connected_node_{i}", 
+                "distance": min(i, request.depth)
+            } 
             for i in range(1, min(5, request.depth + 1))
         ]
+    
+    message = (
+        f"Successfully processed trace request for entrypoint "
+        f"'{request.entrypoint}' with depth {request.depth}"
+    )
     
     return TraceResponse(
         entrypoint=request.entrypoint,
         depth=request.depth,
-        message=f"Successfully processed trace request for entrypoint '{request.entrypoint}' with depth {request.depth}",
+        message=message,
         results=results
     )

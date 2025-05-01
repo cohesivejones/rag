@@ -1,7 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app
+
 from app.db.neo4j import neo4j_connection
+from app.main import app
 
 
 @pytest.fixture
@@ -27,7 +28,11 @@ def mock_neo4j_connection(monkeypatch):
         
         # Generate mock results
         return [
-            {"source": entrypoint, "target": f"mock_node_{i}", "distance": min(i, depth)} 
+            {
+                "source": entrypoint, 
+                "target": f"mock_node_{i}", 
+                "distance": min(i, depth)
+            } 
             for i in range(1, min(5, depth + 1))
         ]
     

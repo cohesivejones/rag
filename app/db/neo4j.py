@@ -1,8 +1,9 @@
-from neo4j import GraphDatabase
-from typing import Dict, Any, List
 import logging
 import os
+from typing import Any, Dict, List
+
 from dotenv import load_dotenv
+from neo4j import GraphDatabase
 
 # Load environment variables
 load_dotenv()
@@ -17,7 +18,7 @@ class Neo4jConnection:
     
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(Neo4jConnection, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
             cls._instance.initialized = False
         return cls._instance
     
@@ -51,7 +52,11 @@ class Neo4jConnection:
             self.driver = None
             logger.info("Disconnected from Neo4j database")
         
-    def execute_query(self, query: str, params: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+    def execute_query(
+        self, 
+        query: str, 
+        params: Dict[str, Any] = None
+    ) -> List[Dict[str, Any]]:
         """
         Execute a Cypher query and return the results.
         

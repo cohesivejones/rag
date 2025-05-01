@@ -134,21 +134,15 @@ uv run pytest --cov=app
 
 ### Code Formatting and Linting
 
-This project uses several tools to ensure code quality:
+This project uses:
 
-- **Black** for code formatting:
+- **Ruff** for code formatting and linting:
   ```bash
-  uv run black .
-  ```
-
-- **isort** for import sorting:
-  ```bash
-  uv run isort .
-  ```
-
-- **flake8** for linting:
-  ```bash
-  uv run flake8
+  # Format code
+  uv run ruff format .
+  
+  # Check and auto-fix linting issues
+  uv run ruff check --fix .
   ```
 
 - **mypy** for type checking:
@@ -159,11 +153,10 @@ This project uses several tools to ensure code quality:
 You can run all of these checks with:
 
 ```bash
-# Format code
-uv run black .
-uv run isort .
+# Format and lint code
+uv run ruff format .
+uv run ruff check --fix .
 
-# Check code
-uv run flake8
+# Type check code
 uv run mypy app
 ```

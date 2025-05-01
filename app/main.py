@@ -1,10 +1,11 @@
+from contextlib import asynccontextmanager
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import trace
+
 from app.db.neo4j import neo4j_connection
-import os
-from dotenv import load_dotenv
-from contextlib import asynccontextmanager
+from app.routers import trace
 
 # Load environment variables from .env file
 load_dotenv()
@@ -43,7 +44,9 @@ async def root():
     """
     Root endpoint that returns a welcome message.
     """
-    return {"message": "Welcome to the Trace API. Use /docs to see the API documentation."}
+    return {
+        "message": "Welcome to the Trace API. Use /docs to see the API documentation."
+    }
 
 
 if __name__ == "__main__":
