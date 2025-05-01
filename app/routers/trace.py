@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import APIRouter
+from pypher import Pypher
 
 from app.db.neo4j import neo4j_connection
 from app.models import TraceRequest, TraceResponse
@@ -28,16 +29,19 @@ async def trace(request: TraceRequest = None):
         from fastapi import Body
         request = Body(...)
     # Sample Cypher query using the entrypoint and depth parameters
-    query = """
-    MATCH path = (n {name: $entrypoint})-[*1..$depth]-(connected)
-    RETURN n.name AS source, connected.name AS target, length(path) AS distance
-    LIMIT 10
-    """
+    q = Pypher()
+    q.MATCH(
+    'path = (n {name: $entrypoint})-[*1..$depth]-(connected)'
+    ).RETURN(
+        'n.name AS source',
+        'connected.name AS target',
+        'length(path) AS distance'
+    ).LIMIT(10)
     
     try:
         # Try to execute the Neo4j query
         results = neo4j_connection.execute_query(
-            query, 
+            str(q), 
             {"entrypoint": request.entrypoint, "depth": request.depth}
         )
     except Exception as e:

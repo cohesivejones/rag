@@ -9,6 +9,7 @@ dependencies = [
     "pydantic>=1.10.7",
     "neo4j>=5.28.0",
     "python-dotenv>=1.0.0",
+    "pypher>=0.7.3",
 ]
 
 [project.optional-dependencies]
