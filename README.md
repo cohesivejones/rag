@@ -61,7 +61,7 @@ To run the application locally:
 
 ```bash
 # Make sure your virtual environment is activated
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 The API will be available at http://localhost:8000
